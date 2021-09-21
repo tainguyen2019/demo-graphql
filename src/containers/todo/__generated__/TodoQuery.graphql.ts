@@ -3,24 +3,28 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
-export type AppQueryVariables = {};
-export type AppQueryResponse = {
+export type TodoQueryVariables = {
+    id: string;
+};
+export type TodoQueryResponse = {
     readonly post: {
         readonly id: string | null;
         readonly title: string | null;
         readonly body: string | null;
     } | null;
 };
-export type AppQuery = {
-    readonly response: AppQueryResponse;
-    readonly variables: AppQueryVariables;
+export type TodoQuery = {
+    readonly response: TodoQueryResponse;
+    readonly variables: TodoQueryVariables;
 };
 
 
 
 /*
-query AppQuery {
-  post(id: 1) {
+query TodoQuery(
+  $id: ID!
+) {
+  post(id: $id) {
     id
     title
     body
@@ -31,12 +35,19 @@ query AppQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "id"
+  }
+],
+v1 = [
+  {
     "alias": null,
     "args": [
       {
-        "kind": "Literal",
+        "kind": "Variable",
         "name": "id",
-        "value": 1
+        "variableName": "id"
       }
     ],
     "concreteType": "Post",
@@ -66,35 +77,35 @@ var v0 = [
         "storageKey": null
       }
     ],
-    "storageKey": "post(id:1)"
+    "storageKey": null
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "AppQuery",
-    "selections": (v0/*: any*/),
+    "name": "TodoQuery",
+    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "AppQuery",
-    "selections": (v0/*: any*/)
+    "name": "TodoQuery",
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "03fb2ad4a329eb021e9922d80d79af31",
+    "cacheID": "c135efb70c442dd2b31c61ea84f90526",
     "id": null,
     "metadata": {},
-    "name": "AppQuery",
+    "name": "TodoQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  post(id: 1) {\n    id\n    title\n    body\n  }\n}\n"
+    "text": "query TodoQuery(\n  $id: ID!\n) {\n  post(id: $id) {\n    id\n    title\n    body\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'e0637240a46cd5cb1416f7b103eddc6f';
+(node as any).hash = 'd9f73ac7115d991da986a5152398a338';
 export default node;
