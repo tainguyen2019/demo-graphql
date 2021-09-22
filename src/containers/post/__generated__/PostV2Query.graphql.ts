@@ -33,37 +33,35 @@ export type OperatorOptions = {
 export type SearchOptions = {
     q?: string | null;
 };
-export type PostQueryVariables = {
+export type PostV2QueryVariables = {
     options?: PageQueryOptions | null;
 };
-export type PostQueryResponse = {
+export type PostV2QueryResponse = {
     readonly posts: {
         readonly data: ReadonlyArray<{
             readonly id: string | null;
             readonly title: string | null;
-            readonly body: string | null;
         } | null> | null;
         readonly meta: {
             readonly totalCount: number | null;
         } | null;
     } | null;
 };
-export type PostQuery = {
-    readonly response: PostQueryResponse;
-    readonly variables: PostQueryVariables;
+export type PostV2Query = {
+    readonly response: PostV2QueryResponse;
+    readonly variables: PostV2QueryVariables;
 };
 
 
 
 /*
-query PostQuery(
+query PostV2Query(
   $options: PageQueryOptions
 ) {
   posts(options: $options) {
     data {
       id
       title
-      body
     }
     meta {
       totalCount
@@ -116,13 +114,6 @@ v1 = [
             "kind": "ScalarField",
             "name": "title",
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "body",
-            "storageKey": null
           }
         ],
         "storageKey": null
@@ -154,7 +145,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "PostQuery",
+    "name": "PostV2Query",
     "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -163,18 +154,18 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "PostQuery",
+    "name": "PostV2Query",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "a7ad8c0a799c896471cb0a9e911f3735",
+    "cacheID": "17a1bba8fc887bb80abcda24f44d9b1b",
     "id": null,
     "metadata": {},
-    "name": "PostQuery",
+    "name": "PostV2Query",
     "operationKind": "query",
-    "text": "query PostQuery(\n  $options: PageQueryOptions\n) {\n  posts(options: $options) {\n    data {\n      id\n      title\n      body\n    }\n    meta {\n      totalCount\n    }\n  }\n}\n"
+    "text": "query PostV2Query(\n  $options: PageQueryOptions\n) {\n  posts(options: $options) {\n    data {\n      id\n      title\n    }\n    meta {\n      totalCount\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'b4da44b30ccf24fe6b71488236ab6e7a';
+(node as any).hash = '7447bbbe771b526b6410b8275608292a';
 export default node;

@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { graphql } from 'babel-plugin-relay/macro';
-import { loadQuery, QueryRenderer, usePreloadedQuery } from 'react-relay';
-import RelayEnvironment from 'relay/ReplayEnvironment';
+import { QueryRenderer } from 'react-relay';
+import RelayEnvironment from 'relay/RelayEnvironment';
 import type {
   PostQuery,
   PostQueryResponse,
-  PostQueryVariables,
 } from './__generated__/PostQuery.graphql';
 
-import UpdatePostMutation from 'relay/mutations/UpdatePostMutation';
+// import UpdatePostMutation from 'relay/mutations/UpdatePostMutation';
+import {
+  Card,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Pagination,
+  Typography,
+} from '@mui/material';
 
-interface Post {
-  id: string;
-  title: string;
-}
+type PostQueryRender = {
+  props: PostQueryResponse | null;
+  error: Error | null;
+};
+
+const LIMIT = 5;
 
 // Define a query
 const query = graphql`
@@ -22,6 +31,7 @@ const query = graphql`
       data {
         id
         title
+        body
       }
       meta {
         totalCount
@@ -30,107 +40,78 @@ const query = graphql`
   }
 `;
 
-const variables: PostQueryVariables = {
-  options: {
-    paginate: {
-      page: 1,
-      limit: 5,
-    },
-  },
-};
+const PostComponent: React.FC = () => {
+  const [page, setPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
 
-const preloadedQuery = loadQuery(RelayEnvironment, query, variables);
-
-export const PostComponent: React.FC = () => {
-  const data = usePreloadedQuery(query, preloadedQuery) as PostQueryResponse;
-
-  return (
-    <div>
-      <h1>Post Component using preloadedQuery</h1>
-      <ul>
-        {data.posts?.data?.map((post) => (
-          <li>
-            <p>
-              {post?.id} {post?.title}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export const PostComponentV2: React.FC = () => {
-  const [page, setPage] = React.useState(1);
-  const [selectedPost, setSelectedPost] = React.useState<Post | null>();
-
-  const handleNextPage = () => {
-    setPage((oldPage) => oldPage + 1);
+  const handleChangePage = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
   };
 
-  const handlePrevPage = () => {
-    setPage((oldPage) => oldPage - 1);
-  };
+  const queryRender = ({ props }: PostQueryRender) => {
+    if (props) {
+      const posts = props.posts?.data;
+      setTotalPosts(Number(props.posts?.meta?.totalCount));
 
-  const handleEdit = (post: Post) => {
-    setSelectedPost(post);
-  };
-
-  const handleSubmit = () => {
-    UpdatePostMutation(
-      RelayEnvironment,
-      {
-        id: selectedPost?.id!,
-      },
-      'Test Body'
-    );
+      return (
+        <Grid container justifyContent="center">
+          {posts?.map((post) => (
+            <Grid item component={Card} key={post?.id} xs={4} md={3} margin={2}>
+              <CardContent>
+                <Typography
+                  variant="h5"
+                  style={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {post?.title}
+                </Typography>
+                <Typography variant="body2">{post?.body}</Typography>
+              </CardContent>
+            </Grid>
+          ))}
+        </Grid>
+      );
+    }
+    return <CircularProgress />;
   };
 
   return (
-    <div>
-      <h1>Post Component using QueryRenderer</h1>
-      <h4>Page : {page}</h4>
-      <button onClick={handleNextPage}>Next</button>
-      <button onClick={handlePrevPage}>Prev</button>
-      <div>
-        Selected post: <input value={`${selectedPost?.title}`} />
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
-      <QueryRenderer<PostQuery>
-        environment={RelayEnvironment}
-        query={query}
-        variables={{
-          options: {
-            paginate: {
-              page,
-              limit: 5,
+    <Grid container justifyContent="center" alignItems="center" spacing={2}>
+      <Grid item>
+        <Typography variant="h4">List of Posts</Typography>
+      </Grid>
+      <Grid item container justifyContent="center" xs={12}>
+        <QueryRenderer<PostQuery>
+          environment={RelayEnvironment}
+          query={query}
+          variables={{
+            options: {
+              paginate: {
+                page,
+                limit: LIMIT,
+              },
             },
-          },
-        }}
-        render={({ props }) => {
-          if (props) {
-            return (
-              <ul>
-                {props.posts?.data?.map((post) => (
-                  <li>
-                    <p>
-                      {post?.id} {post?.title}
-                      <button
-                        onClick={() =>
-                          handleEdit({ id: post?.id!, title: post?.title! })
-                        }
-                      >
-                        Edit
-                      </button>
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            );
-          }
-          return <div>Loading</div>;
-        }}
-      />
-    </div>
+          }}
+          render={queryRender}
+        />
+      </Grid>
+      {totalPosts > 0 && (
+        <Grid item container justifyContent="center" xs={12}>
+          <Pagination
+            page={page}
+            count={Math.ceil(totalPosts / LIMIT)}
+            onChange={handleChangePage}
+          />
+        </Grid>
+      )}
+    </Grid>
   );
 };
+
+export default PostComponent;

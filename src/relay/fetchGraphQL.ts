@@ -1,8 +1,7 @@
 import { Variables } from 'react-relay';
 import { GraphQLResponse, ObservableFromValue } from 'relay-runtime';
 
-const { REACT_APP_API_URL } = process.env;
-const apiURL = REACT_APP_API_URL || '';
+const { REACT_APP_API_URL = '' } = process.env;
 
 const headers = {
   Accept: 'application/json',
@@ -20,7 +19,7 @@ export const fetchGraphQL = (
     variables,
   });
 
-  const response = fetch(apiURL, {
+  const response = fetch(REACT_APP_API_URL, {
     method: 'POST',
     headers,
     body,

@@ -1,20 +1,25 @@
 import React, { Suspense } from 'react';
-import './App.css';
+import './App.styles.ts';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
-import RelayEnvironment from './relay/ReplayEnvironment';
+import RelayEnvironment from 'relay/RelayEnvironment';
+import PostComponent from 'containers/post/Post';
 
-import { PostComponent, PostComponentV2 } from 'containers/post/Post';
-import TodoComponent from 'containers/todo/Todo';
+import { CssBaseline, Box, CircularProgress } from '@mui/material';
+import useStyles from 'App.styles';
 
 const App: React.FC = () => {
+  const classes = useStyles();
   return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <Suspense fallback={'Loading...'}>
-        <PostComponent />
-        <PostComponentV2 />
-        <TodoComponent />
-      </Suspense>
-    </RelayEnvironmentProvider>
+    <Box className={classes.root}>
+      <CssBaseline />
+      <RelayEnvironmentProvider environment={RelayEnvironment}>
+        <Suspense
+          fallback={<CircularProgress className={classes.loadingPage} />}
+        >
+          <PostComponent />
+        </Suspense>
+      </RelayEnvironmentProvider>
+    </Box>
   );
 };
 

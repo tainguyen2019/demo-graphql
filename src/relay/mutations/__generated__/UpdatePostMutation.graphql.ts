@@ -14,6 +14,7 @@ export type UpdatePostMutationVariables = {
 export type UpdatePostMutationResponse = {
     readonly updatePost: {
         readonly id: string | null;
+        readonly title: string | null;
         readonly body: string | null;
     } | null;
 };
@@ -31,6 +32,7 @@ mutation UpdatePostMutation(
 ) {
   updatePost(id: $id, input: $input) {
     id
+    title
     body
   }
 }
@@ -80,6 +82,13 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
+        "name": "title",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
         "name": "body",
         "storageKey": null
       }
@@ -105,14 +114,14 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "24861482adf014689bd2deb30ec52ce8",
+    "cacheID": "6be2e67f64b91ddcd411dab4229fe439",
     "id": null,
     "metadata": {},
     "name": "UpdatePostMutation",
     "operationKind": "mutation",
-    "text": "mutation UpdatePostMutation(\n  $id: ID!\n  $input: UpdatePostInput!\n) {\n  updatePost(id: $id, input: $input) {\n    id\n    body\n  }\n}\n"
+    "text": "mutation UpdatePostMutation(\n  $id: ID!\n  $input: UpdatePostInput!\n) {\n  updatePost(id: $id, input: $input) {\n    id\n    title\n    body\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '62b9a9bf84067f0ca141d004d1873c70';
+(node as any).hash = 'e49db2f3a674db8209a573d4c1ba5cd4';
 export default node;
