@@ -1,26 +1,11 @@
 import React from 'react';
-import { graphql } from 'babel-plugin-relay/macro';
 import { loadQuery, usePreloadedQuery } from 'react-relay';
 import RelayEnvironment from 'relay/RelayEnvironment';
 import type {
   PostQuery,
   PostQueryVariables,
-} from './__generated__/PostQuery.graphql';
-
-// Define a query
-const query = graphql`
-  query PostV2Query($options: PageQueryOptions) {
-    posts(options: $options) {
-      data {
-        id
-        title
-      }
-      meta {
-        totalCount
-      }
-    }
-  }
-`;
+} from 'relay/queries/__generated__/PostQuery.graphql';
+import { query } from 'relay/queries/Post';
 
 const variables: PostQueryVariables = {
   options: {
