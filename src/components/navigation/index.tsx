@@ -1,7 +1,14 @@
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import Link, { LinkProps } from 'components/Link';
 
 const Navigation: React.FC = () => {
+  const appLinks: LinkProps[] = [
+    { name: 'All Posts', path: '/post' },
+    { name: 'Photo Album', path: '/album' },
+    { name: 'Your Todo', path: '/todo' },
+  ];
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -9,15 +16,9 @@ const Navigation: React.FC = () => {
           Demo Relay GraphQL
         </Typography>
         <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-around' }}>
-          <Button href="/post" color="info">
-            All posts
-          </Button>
-          <Button href="/album" color="info">
-            Photo Album
-          </Button>
-          <Button href="/todo" color="info">
-            Your Todo
-          </Button>
+          {appLinks.map(({ name, path }) => (
+            <Link name={name} path={path} />
+          ))}
         </Box>
       </Toolbar>
     </AppBar>
