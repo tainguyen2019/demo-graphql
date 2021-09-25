@@ -30,7 +30,7 @@ const CardItem: React.FC<CardItemProps> = ({ item, handleEdit }) => {
         flexDirection: 'column',
         height: 'auto',
       }}
-      margin={2}
+      margin={1}
     >
       <CardContent style={{ flexGrow: 1 }}>
         <Typography

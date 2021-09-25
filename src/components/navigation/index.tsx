@@ -15,9 +15,9 @@ const Navigation: React.FC = () => {
         <Typography variant="h6" component="div" sx={{ flex: 2 }}>
           Demo Relay GraphQL
         </Typography>
-        <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-around' }}>
+        <Box sx={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
           {appLinks.map(({ name, path }) => (
-            <Link name={name} path={path} />
+            <Link key={path} name={name} path={path} />
           ))}
         </Box>
       </Toolbar>

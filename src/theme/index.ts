@@ -18,6 +18,10 @@ const theme = createTheme({
     info: {
       main: white,
     },
+    background: {
+      default: '#EAEEF3',
+      paper: white,
+    },
   },
 });
 

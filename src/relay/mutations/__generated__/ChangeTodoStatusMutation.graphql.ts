@@ -14,7 +14,6 @@ export type ChangeTodoStatusMutationVariables = {
 export type ChangeTodoStatusMutationResponse = {
     readonly updateTodo: {
         readonly id: string | null;
-        readonly title: string | null;
         readonly completed: boolean | null;
     } | null;
 };
@@ -32,7 +31,6 @@ mutation ChangeTodoStatusMutation(
 ) {
   updateTodo(id: $id, input: $input) {
     id
-    title
     completed
   }
 }
@@ -82,13 +80,6 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "title",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
         "name": "completed",
         "storageKey": null
       }
@@ -114,14 +105,14 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "22217f270a3eab728243a756257434bb",
+    "cacheID": "bbd70318da7827a56274c5fd7421f326",
     "id": null,
     "metadata": {},
     "name": "ChangeTodoStatusMutation",
     "operationKind": "mutation",
-    "text": "mutation ChangeTodoStatusMutation(\n  $id: ID!\n  $input: UpdateTodoInput!\n) {\n  updateTodo(id: $id, input: $input) {\n    id\n    title\n    completed\n  }\n}\n"
+    "text": "mutation ChangeTodoStatusMutation(\n  $id: ID!\n  $input: UpdateTodoInput!\n) {\n  updateTodo(id: $id, input: $input) {\n    id\n    completed\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '8408224fbe4ec92086012e85807b516c';
+(node as any).hash = '0be46c4ea644c00c0128a9275d2da2cf';
 export default node;

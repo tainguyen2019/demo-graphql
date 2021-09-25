@@ -1,27 +1,28 @@
-import { graphql, commitMutation } from 'react-relay';
+import { commitMutation } from 'react-relay';
 import { Environment } from 'relay-runtime';
+import { graphql } from 'babel-plugin-relay/macro';
 
-interface Todo {
+export type Todo = {
   id: string;
-}
+};
 
 // We start by defining our mutation from above using `graphql`
 const mutation = graphql`
   mutation ChangeTodoStatusMutation($id: ID!, $input: UpdateTodoInput!) {
     updateTodo(id: $id, input: $input) {
       id
-      title
       completed
     }
   }
 `;
 
-const commit = (environment: Environment, complete: boolean, todo: Todo) => {
+const commit = (environment: Environment, completed: boolean, todo: Todo) => {
   // Now we just call commitMutation with the appropriate parameters
   return commitMutation(environment, {
     mutation,
     variables: {
-      input: { complete, id: todo.id },
+      id: todo.id,
+      input: { completed },
     },
   });
 };
