@@ -26,7 +26,9 @@ const PostComponent: React.FC = () => {
     _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPage(value);
+    if (value) {
+      setPage(value);
+    }
   };
 
   const handleEdit = (postId: string) => () => {

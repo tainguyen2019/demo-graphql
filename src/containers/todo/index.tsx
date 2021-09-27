@@ -26,7 +26,9 @@ const TodoComponent: React.FC = () => {
     _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPage(value);
+    if (value) {
+      setPage(value);
+    }
   };
 
   const handleEdit = (todoId: string) => () => {
