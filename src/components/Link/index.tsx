@@ -1,5 +1,5 @@
-import { Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import useStyles from './styles';
 
 export type LinkProps = {
   name: string;
@@ -7,12 +7,17 @@ export type LinkProps = {
 };
 
 const Link: React.FC<LinkProps> = ({ name, path }) => {
+  const classes = useStyles();
+
   return (
-    <Button color="info">
-      <NavLink to={path} style={{ textDecoration: 'none', color: 'inherit' }}>
-        {name}
-      </NavLink>
-    </Button>
+    <NavLink
+      to={path}
+      className={classes.link}
+      activeClassName={classes.linkActive}
+      exact
+    >
+      {name}
+    </NavLink>
   );
 };
 

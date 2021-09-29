@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   CircularProgress,
   Grid,
@@ -5,46 +6,65 @@ import {
   ImageListItem,
   ImageListItemBar,
   ListSubheader,
+  Pagination,
   Paper,
   Typography,
 } from '@mui/material';
 import { QueryRenderer } from 'react-relay';
-import RelayEnvironment from 'relay/RelayEnvironment';
+import relayEnvironment from 'relay/relayEnvironment';
 import { query } from 'relay/queries/Album';
 import {
   AlbumQuery,
   AlbumQueryResponse,
 } from 'relay/queries/__generated__/AlbumQuery.graphql';
 
-type AlbumQueryRender = {
-  props: AlbumQueryResponse | null;
-  error: Error | null;
-};
+const LIMIT = 10;
 
 const AlbumComponent: React.FC = () => {
-  const queryRender = ({ props }: AlbumQueryRender) => {
-    if (props) {
-      const albums = props.albums?.data!;
+  const [page, setPage] = useState(1);
+
+  const handleChangePage = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    if (value) {
+      setPage(value);
+    }
+  };
+
+  const queryRender = ({ props }: RenderQueryProps<AlbumQueryResponse>) => {
+    if (!props) {
       return (
-        <Grid
-          container
-          padding={2}
-          spacing={2}
-          justifyContent="center"
-          alignItems="center"
-        >
+        <CircularProgress
+          style={{
+            textAlign: 'center',
+          }}
+        />
+      );
+    }
+
+    const albums = props.albums?.data!;
+    const totalAlbums = props.albums?.meta?.totalCount || 0;
+    return (
+      <>
+        <Grid container justifyContent="center" alignItems="center">
           {albums.map((album) => (
             <Grid
               item
               key={album?.id}
-              xs={4}
-              sx={{ height: 450, overflowY: 'scroll' }}
-              margin={3}
+              xs={6}
+              md={4}
+              sx={{
+                height: 450,
+                overflowY: 'scroll',
+                margin: 2,
+                paddingX: 2,
+              }}
               component={Paper}
             >
               <ImageList>
                 <ImageListItem key="Subheader" cols={2}>
-                  <ListSubheader component="div">
+                  <ListSubheader>
                     <Typography
                       variant="h6"
                       sx={{
@@ -53,7 +73,7 @@ const AlbumComponent: React.FC = () => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {album?.title}
+                      {album?.id}. {album?.title}
                     </Typography>
                   </ListSubheader>
                 </ImageListItem>
@@ -67,15 +87,18 @@ const AlbumComponent: React.FC = () => {
             </Grid>
           ))}
         </Grid>
-      );
-    }
-
-    return (
-      <CircularProgress
-        style={{
-          textAlign: 'center',
-        }}
-      />
+        {totalAlbums > 0 && (
+          <Grid item container justifyContent="center" xs={12} marginTop={1}>
+            <Pagination
+              page={page}
+              count={Math.ceil(totalAlbums / LIMIT)}
+              onChange={handleChangePage}
+              variant="outlined"
+              color="primary"
+            />
+          </Grid>
+        )}
+      </>
     );
   };
 
@@ -89,13 +112,13 @@ const AlbumComponent: React.FC = () => {
       padding={1}
     >
       <QueryRenderer<AlbumQuery>
-        environment={RelayEnvironment}
+        environment={relayEnvironment}
         query={query}
         variables={{
           options: {
             paginate: {
-              page: 1,
-              limit: 9,
+              page,
+              limit: LIMIT,
             },
           },
         }}

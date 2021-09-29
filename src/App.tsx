@@ -1,8 +1,6 @@
 import React from 'react';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
-
 import { CssBaseline, Box } from '@mui/material';
-import useStyles from 'App.styles';
 import {
   Switch,
   Route,
@@ -11,12 +9,13 @@ import {
 } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import Navigation from 'components/navigation';
-import RelayEnvironment from 'relay/RelayEnvironment';
+import relayEnvironment from 'relay/relayEnvironment';
 import PostComponent from 'containers/post';
 import TodoComponent from 'containers/todo';
 import AlbumComponent from 'containers/album';
-import PostComponentV2 from 'containers/post/PostV2';
+import DashboardComponent from 'containers/dashboard';
 import theme from 'theme';
+import useStyles from 'App.styles';
 
 const App: React.FC = () => {
   const classes = useStyles();
@@ -24,16 +23,15 @@ const App: React.FC = () => {
     <Box className={classes.root}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RelayEnvironmentProvider environment={RelayEnvironment}>
+        <RelayEnvironmentProvider environment={relayEnvironment}>
           <Router>
             <Navigation />
-
             <Switch>
               <Route path="/post" exact component={PostComponent} />
               <Route path="/todo" exact component={TodoComponent} />
               <Route path="/album" exact component={AlbumComponent} />
-              <Route path="/post-v2" exact component={PostComponentV2} />
-              <Redirect from="/" to="/post" exact />
+              <Route path="/dashboard" exact component={DashboardComponent} />
+              <Redirect from="/" to="/dashboard" exact />
             </Switch>
           </Router>
         </RelayEnvironmentProvider>

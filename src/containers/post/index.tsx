@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { QueryRenderer } from 'react-relay';
 import { CircularProgress, Grid, Pagination } from '@mui/material';
-import RelayEnvironment from 'relay/RelayEnvironment';
+import relayEnvironment from 'relay/relayEnvironment';
 import type {
   PostQuery,
   PostQueryResponse,
@@ -11,16 +11,10 @@ import UpdatePostMutation from 'relay/mutations/UpdatePostMutation';
 import { query } from 'relay/queries/Post';
 import CardList from './components/card-list';
 
-type PostQueryRender = {
-  props: PostQueryResponse | null;
-  error: Error | null;
-};
-
 const LIMIT = 6;
 
 const PostComponent: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [totalPosts, setTotalPosts] = useState(0);
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -32,37 +26,38 @@ const PostComponent: React.FC = () => {
   };
 
   const handleEdit = (postId: string) => () => {
-    UpdatePostMutation(RelayEnvironment, { id: postId }, 'New Body');
+    UpdatePostMutation(relayEnvironment, { id: postId }, 'New Body');
   };
 
-  const queryRender = ({ props }: PostQueryRender) => {
-    if (props) {
-      setTotalPosts(props.posts?.meta?.totalCount!);
-
+  const queryRender = ({ props }: RenderQueryProps<PostQueryResponse>) => {
+    if (!props) {
       return (
-        <>
-          <CardList store={props} handleEdit={handleEdit} />
-          {totalPosts > 0 && (
-            <Grid item container justifyContent="center" xs={12} marginTop={1}>
-              <Pagination
-                page={page}
-                count={Math.ceil(totalPosts / LIMIT)}
-                onChange={handleChangePage}
-                variant="outlined"
-                color="primary"
-              />
-            </Grid>
-          )}
-        </>
+        <CircularProgress
+          style={{
+            textAlign: 'center',
+          }}
+        />
       );
     }
 
+    const totalPosts = props.posts?.meta?.totalCount! || 0;
+    const posts = props.posts?.data!;
+
     return (
-      <CircularProgress
-        style={{
-          textAlign: 'center',
-        }}
-      />
+      <>
+        <CardList data={posts} handleEdit={handleEdit} />
+        {totalPosts > 0 && (
+          <Grid item container justifyContent="center" xs={12} marginTop={1}>
+            <Pagination
+              page={page}
+              count={Math.ceil(totalPosts / LIMIT)}
+              onChange={handleChangePage}
+              variant="outlined"
+              color="primary"
+            />
+          </Grid>
+        )}
+      </>
     );
   };
 
@@ -76,7 +71,7 @@ const PostComponent: React.FC = () => {
       padding={1}
     >
       <QueryRenderer<PostQuery>
-        environment={RelayEnvironment}
+        environment={relayEnvironment}
         query={query}
         variables={{
           options: {

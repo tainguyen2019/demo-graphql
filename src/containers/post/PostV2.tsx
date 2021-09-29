@@ -1,6 +1,6 @@
 import React from 'react';
 import { loadQuery, usePreloadedQuery } from 'react-relay';
-import RelayEnvironment from 'relay/RelayEnvironment';
+import relayEnvironment from 'relay/relayEnvironment';
 import type {
   PostQuery,
   PostQueryVariables,
@@ -16,7 +16,7 @@ const variables: PostQueryVariables = {
   },
 };
 
-const preloadedQuery = loadQuery<PostQuery>(RelayEnvironment, query, variables);
+const preloadedQuery = loadQuery<PostQuery>(relayEnvironment, query, variables);
 
 export const PostComponentV2: React.FC = () => {
   const data = usePreloadedQuery<PostQuery>(query, preloadedQuery);

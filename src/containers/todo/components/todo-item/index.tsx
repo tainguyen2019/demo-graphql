@@ -11,22 +11,17 @@ import {
 import { Done as DoneIcon, Pending as PendingIcon } from '@mui/icons-material';
 
 type TodoItemProps = {
-  item: {
-    readonly id: string | null;
-    readonly title: string | null;
-    readonly completed: boolean | null;
-    readonly user: {
-      readonly name: string | null;
-    } | null;
-  } | null;
-  handleEdit: (Id: string) => VoidFunction;
-  handleDelete: (Id: string) => VoidFunction;
+  item: Todo;
+  handleEdit?: (Id: string) => VoidFunction;
+  handleDelete?: (Id: string) => VoidFunction;
+  hideActions?: boolean;
 };
 
 const TodoItem: React.FC<TodoItemProps> = ({
   item,
   handleEdit,
   handleDelete,
+  hideActions,
 }) => {
   return (
     <Grid
@@ -71,32 +66,34 @@ const TodoItem: React.FC<TodoItemProps> = ({
 
         <Typography sx={{ marginTop: 2 }}>{item?.title}</Typography>
       </CardContent>
-      <CardActions>
-        <Grid container justifyContent="space-around">
-          {!item?.completed && (
+      {!hideActions && (
+        <CardActions>
+          <Grid container justifyContent="space-around">
+            {!item?.completed && (
+              <Grid
+                item
+                xs={5}
+                component={Button}
+                onClick={handleEdit!(item?.id!)}
+                variant="outlined"
+              >
+                Complete
+              </Grid>
+            )}
             <Grid
               item
               xs={5}
               component={Button}
-              onClick={handleEdit(item?.id!)}
+              onClick={handleDelete!(item?.id!)}
               variant="outlined"
+              color="secondary.main"
+              borderColor="secondary.main"
             >
-              Complete
+              Delete
             </Grid>
-          )}
-          <Grid
-            item
-            xs={5}
-            component={Button}
-            onClick={handleDelete(item?.id!)}
-            variant="outlined"
-            color="secondary.main"
-            borderColor="secondary.main"
-          >
-            Delete
           </Grid>
-        </Grid>
-      </CardActions>
+        </CardActions>
+      )}
     </Grid>
   );
 };

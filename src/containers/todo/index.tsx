@@ -5,22 +5,16 @@ import {
   TodoQuery,
   TodoQueryResponse,
 } from 'relay/queries/__generated__/TodoQuery.graphql';
-import RelayEnvironment from 'relay/RelayEnvironment';
+import relayEnvironment from 'relay/relayEnvironment';
 import ChangeTodoStatusMutation from 'relay/mutations/ChangeTodoStatusMutation';
 import TodoList from './components/todo-list';
 import { CircularProgress, Grid, Pagination } from '@mui/material';
 import DeleteTodoMutation from 'relay/mutations/DeleteTodoMutation';
 
-type TodoQueryRender = {
-  props: TodoQueryResponse | null;
-  error: Error | null;
-};
-
 const LIMIT = 9;
 
 const TodoComponent: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [totalTodos, setTotalTodos] = useState(0);
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -32,46 +26,47 @@ const TodoComponent: React.FC = () => {
   };
 
   const handleEdit = (todoId: string) => () => {
-    ChangeTodoStatusMutation(RelayEnvironment, true, { id: todoId });
+    ChangeTodoStatusMutation(relayEnvironment, true, { id: todoId });
   };
 
   const handleDelete = (todoId: string) => () => {
-    DeleteTodoMutation(RelayEnvironment, { id: todoId });
+    DeleteTodoMutation(relayEnvironment, { id: todoId });
   };
 
-  const queryRender = ({ props }: TodoQueryRender) => {
-    if (props) {
-      setTotalTodos(props.todos?.meta?.totalCount!);
-
+  const queryRender = ({ props }: RenderQueryProps<TodoQueryResponse>) => {
+    if (!props) {
       return (
-        <>
-          <TodoList
-            store={props}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
-          />
-
-          {totalTodos > 0 && (
-            <Grid item container justifyContent="center" xs={12} marginTop={1}>
-              <Pagination
-                page={page}
-                count={Math.ceil(totalTodos / LIMIT)}
-                onChange={handleChangePage}
-                variant="outlined"
-                color="primary"
-              />
-            </Grid>
-          )}
-        </>
+        <CircularProgress
+          style={{
+            textAlign: 'center',
+          }}
+        />
       );
     }
 
+    const totalTodos = props.todos?.meta?.totalCount || 0;
+    const todos = props.todos?.data!;
+
     return (
-      <CircularProgress
-        style={{
-          textAlign: 'center',
-        }}
-      />
+      <>
+        <TodoList
+          data={todos}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
+
+        {totalTodos > 0 && (
+          <Grid item container justifyContent="center" xs={12} marginTop={1}>
+            <Pagination
+              page={page}
+              count={Math.ceil(totalTodos / LIMIT)}
+              onChange={handleChangePage}
+              variant="outlined"
+              color="primary"
+            />
+          </Grid>
+        )}
+      </>
     );
   };
 
@@ -85,7 +80,7 @@ const TodoComponent: React.FC = () => {
       padding={1}
     >
       <QueryRenderer<TodoQuery>
-        environment={RelayEnvironment}
+        environment={relayEnvironment}
         query={query}
         variables={{
           options: {

@@ -9,15 +9,16 @@ import {
 } from '@mui/material';
 
 type CardItemProps = {
-  item: {
-    readonly id: string | null;
-    readonly title: string | null;
-    readonly body: string | null;
-  } | null;
-  handleEdit: (Id: string) => VoidFunction;
+  item: Post;
+  handleEdit?: (Id: string) => VoidFunction;
+  hideActions?: boolean;
 };
 
-const CardItem: React.FC<CardItemProps> = ({ item, handleEdit }) => {
+const CardItem: React.FC<CardItemProps> = ({
+  item,
+  handleEdit,
+  hideActions,
+}) => {
   return (
     <Grid
       item
@@ -45,15 +46,17 @@ const CardItem: React.FC<CardItemProps> = ({ item, handleEdit }) => {
         </Typography>
         <Typography variant="body2">{item?.body}</Typography>
       </CardContent>
-      <CardActions>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleEdit(item?.id!)}
-        >
-          Edit
-        </Button>
-      </CardActions>
+      {!hideActions && (
+        <CardActions>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleEdit!(item?.id!)}
+          >
+            Edit
+          </Button>
+        </CardActions>
+      )}
     </Grid>
   );
 };
