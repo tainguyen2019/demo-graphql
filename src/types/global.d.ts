@@ -15,6 +15,11 @@ type PostInputs = {
   body: string;
 };
 
+type TodoInputs = {
+  title: string;
+  completed?: boolean;
+};
+
 type Todo = {
   readonly id: string | null;
   readonly title: string | null;

@@ -1,3 +1,11 @@
+import {
+  CircularProgress,
+  Fab,
+  Grid,
+  Pagination,
+  Tooltip,
+} from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
 import { QueryRenderer } from 'react-relay';
 import { useState } from 'react';
 import { query } from 'relay/queries/Todo';
@@ -7,14 +15,29 @@ import {
 } from 'relay/queries/__generated__/TodoQuery.graphql';
 import relayEnvironment from 'relay/relayEnvironment';
 import ChangeTodoStatusMutation from 'relay/mutations/ChangeTodoStatusMutation';
-import TodoList from './components/todo-list';
-import { CircularProgress, Grid, Pagination } from '@mui/material';
 import DeleteTodoMutation from 'relay/mutations/DeleteTodoMutation';
+import CreateTodoMutation from 'relay/mutations/CreateTodoMutation';
+import TodoList from './components/todo-list';
+import TodoForm from './components/todo-form';
 
 const LIMIT = 9;
 
 const TodoComponent: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = (todo: TodoInputs) => {
+    CreateTodoMutation(relayEnvironment, { ...todo, completed: false });
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -92,6 +115,16 @@ const TodoComponent: React.FC = () => {
         }}
         render={queryRender}
       />
+      <Tooltip title="New Todo">
+        <Fab
+          color="primary"
+          sx={{ position: 'fixed', bottom: '5%', right: '5%' }}
+          onClick={handleClickOpen}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+      <TodoForm open={open} onClose={handleClose} onSubmit={handleSubmit} />
     </Grid>
   );
 };
