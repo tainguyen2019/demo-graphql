@@ -4,21 +4,21 @@ import { graphql } from 'babel-plugin-relay/macro';
 
 // We start by defining our mutation from above using `graphql`
 const mutation = graphql`
-  mutation ChangeTodoStatusMutation($id: ID!, $input: UpdateTodoInput!) {
-    updateTodo(id: $id, input: $input) {
+  mutation CreatePostMutation($input: CreatePostInput!) {
+    createPost(input: $input) {
       id
-      completed
+      title
+      body
     }
   }
 `;
 
-const commit = (environment: Environment, completed: boolean, id: string) => {
+const commit = (environment: Environment, post: PostInputs) => {
   // Now we just call commitMutation with the appropriate parameters
   return commitMutation(environment, {
     mutation,
     variables: {
-      id,
-      input: { completed },
+      input: { title: post.title, body: post.body },
     },
   });
 };

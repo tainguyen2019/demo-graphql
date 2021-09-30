@@ -26,7 +26,7 @@ const TodoComponent: React.FC = () => {
   };
 
   const handleEdit = (todoId: string) => () => {
-    ChangeTodoStatusMutation(relayEnvironment, true, { id: todoId });
+    ChangeTodoStatusMutation(relayEnvironment, true, todoId);
   };
 
   const handleDelete = (todoId: string) => () => {

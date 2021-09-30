@@ -10,6 +10,11 @@ type Post = {
   readonly body: string | null;
 } | null;
 
+type PostInputs = {
+  title: string;
+  body: string;
+};
+
 type Todo = {
   readonly id: string | null;
   readonly title: string | null;
