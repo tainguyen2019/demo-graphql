@@ -5,7 +5,7 @@ import {
   DashboardQueryResponse,
 } from 'relay/queries/__generated__/DashboardQuery.graphql';
 import { query } from 'relay/queries/Dashboard';
-import relayEnvironment from 'relay/relayEnvironment';
+import relayEnvironment from 'relay/environment';
 import { computeData } from './utils';
 import LatestList from './components/latest-list';
 import DashboardOverview from './components/dashboard-overview';

@@ -13,7 +13,7 @@ import {
   TodoQuery,
   TodoQueryResponse,
 } from 'relay/queries/__generated__/TodoQuery.graphql';
-import relayEnvironment from 'relay/relayEnvironment';
+import relayEnvironment from 'relay/environment';
 import ChangeTodoStatusMutation from 'relay/mutations/ChangeTodoStatusMutation';
 import DeleteTodoMutation from 'relay/mutations/DeleteTodoMutation';
 import CreateTodoMutation from 'relay/mutations/CreateTodoMutation';

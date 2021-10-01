@@ -1,6 +1,6 @@
 import React from 'react';
 import { loadQuery, usePreloadedQuery } from 'react-relay';
-import relayEnvironment from 'relay/relayEnvironment';
+import relayEnvironment from 'relay/environment';
 import type {
   PostQuery,
   PostQueryVariables,

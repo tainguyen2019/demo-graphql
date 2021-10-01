@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { QueryRenderer } from 'react-relay';
-import relayEnvironment from 'relay/relayEnvironment';
+import relayEnvironment from 'relay/environment';
 import { query } from 'relay/queries/Album';
 import {
   AlbumQuery,

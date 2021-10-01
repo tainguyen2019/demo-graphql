@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import Navigation from 'components/navigation';
-import relayEnvironment from 'relay/relayEnvironment';
+import relayEnvironment from 'relay/environment';
 import PostComponent from 'containers/post';
 import TodoComponent from 'containers/todo';
 import AlbumComponent from 'containers/album';

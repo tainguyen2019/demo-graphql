@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import relayEnvironment from 'relay/relayEnvironment';
+import relayEnvironment from 'relay/environment';
 import type {
   PostQuery,
   PostQueryResponse,
