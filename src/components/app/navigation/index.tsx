@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import Link, { LinkProps } from 'components/link';
+import Link, { LinkProps } from 'components/common/link';
 import useStyles from './styles';
 
 const Navigation: React.FC = () => {

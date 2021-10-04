@@ -8,7 +8,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
-import Navigation from 'components/navigation';
+import Navigation from 'components/app/navigation';
 import relayEnvironment from 'relay/environment';
 import PostComponent from 'containers/post';
 import TodoComponent from 'containers/todo';

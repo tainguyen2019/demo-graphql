@@ -1,7 +1,7 @@
 import { Button, DialogContent, DialogActions, Grid } from '@mui/material';
 import { useForm, SubmitHandler, DefaultValues } from 'react-hook-form';
-import MyInput from 'components/my-input';
-import MyDialog from 'components/my-dialog';
+import MyInput from 'components/common/my-input';
+import MyDialog from 'components/common/my-dialog';
 
 type PostFormProps = {
   open: boolean;
